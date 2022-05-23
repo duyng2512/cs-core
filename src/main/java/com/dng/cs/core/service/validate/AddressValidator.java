@@ -25,27 +25,27 @@ public class AddressValidator {
         String err;
 
         if (!addressDTO.getState().equals("ACTIVE") && !addressDTO.getState().equals("INACTIVE")) {
-            err = String.format("Only State ACTIVE or INACTIVE is valid");
+            err = String.format("State [%s] Only State ACTIVE or INACTIVE is valid", addressDTO.getState());
             throw new InvalidReqBodyException(err);
         }
 
         if (! (addressDTO.getZipcode().length() == BusinessConstant.ZIPCODE_LEN)) {
-            err = String.format("Zip code length must be " + BusinessConstant.ZIPCODE_LEN);
+            err = String.format("Zipcode invalid [%s], length must be " + BusinessConstant.ZIPCODE_LEN, addressDTO.getZipcode());
             throw new InvalidReqBodyException(err);
         }
 
         if (!phonePattern.matcher(addressDTO.getPhone()).matches()) {
-            err = String.format("Phone Address is invalid");
+            err = String.format("Phone [%s] is invalid", addressDTO.getPhone());
             throw new InvalidReqBodyException(err);
         }
 
         if (!emailPattern.matcher(addressDTO.getEmail()).matches()) {
-            err = String.format("Email Address is invalid");
+            err = String.format("Email Address [%s] is invalid", addressDTO.getEmail());
             throw new InvalidReqBodyException(err);
         }
 
         if (!urlPattern.matcher(addressDTO.getUrl()).matches()) {
-            err = String.format("URL is invalid");
+            err = String.format("URL [%s] is invalid", addressDTO.getUrl());
             throw new InvalidReqBodyException(err);
         }
     };

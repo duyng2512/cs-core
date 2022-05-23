@@ -14,16 +14,19 @@ public class BeanFactoryConfiguration {
     @Bean(name = "clientModelMapper")
     public ModelMapper clientModelMapper(){
         ModelMapper modelMapper = new ModelMapper();
-
         TypeMap<Client, ClientEntity> emailMapper = modelMapper.createTypeMap(Client.class, ClientEntity.class);
         emailMapper.addMappings(mapper -> mapper.map(Client::getEmail, ClientEntity::seteMail));
-
-        TypeMap<ClientEntity, Client> dateCreatedMapper = modelMapper.createTypeMap(ClientEntity.class, Client.class);
-        dateCreatedMapper.addMappings(mapper -> mapper.map(ClientEntity::getDateCreated, (client, o) -> {
-            client.setDateCreated(DateTime.now());
-        }));
-
         return modelMapper;
+    }
+
+    @Bean(name = "contractModelMapper")
+    public ModelMapper contractModelMapper(){
+        return new ModelMapper();
+    }
+
+    @Bean(name = "addressModelMapper")
+    public ModelMapper addressModelMapper(){
+        return new ModelMapper();
     }
 
 

@@ -62,9 +62,7 @@ class ClientServiceTest {
                 .thenReturn(Boolean.FALSE);
         Mockito.when(clientBaseRepository.save(Mockito.any()))
                         .thenReturn(entity);
-        Optional<Long> newId = clientService.addClient(clientDTO);
-        assertTrue(newId.isPresent());
-        assertThat(newId.get()).isEqualTo(1000);
+        Long newId = clientService.addClient(clientDTO);
     }
 
 

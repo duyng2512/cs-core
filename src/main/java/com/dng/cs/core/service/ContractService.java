@@ -7,6 +7,7 @@ import com.dng.cs.core.model.Contract;
 import com.dng.cs.core.repository.base.ContractBaseRepository;
 import com.dng.cs.core.service.validate.ContractValidator;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +21,7 @@ public class ContractService {
 
     public ContractService(ContractBaseRepository contractBaseRepository,
                            ContractValidator contractValidator,
-                           ModelMapper modelMapper) {
+                           @Qualifier("contractModelMapper") ModelMapper modelMapper) {
         this.contractBaseRepository = contractBaseRepository;
         this.contractValidator = contractValidator;
         this.modelMapper = modelMapper;
