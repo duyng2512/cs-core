@@ -25,22 +25,22 @@ public class ContractController implements ContractApi {
 
     @Override
     @DeleteMapping("/{contractId}")
-    public ResponseEntity<ModelApiResponse> deleteContractById(@PathVariable Long contractId) {
-        contractService.deleteContractById(contractId);
+    public ResponseEntity<ModelApiResponse> deleteContractById(@PathVariable String contractId) {
+        contractService.deleteContractById(Long.valueOf(contractId));
         return ResponseEntity.ok(ContractApiResponse.deleteContract(contractId));
     }
 
     @Override
     @GetMapping("/{contractId}")
-    public ResponseEntity<ModelApiResponse> getContractById(@PathVariable Long contractId) {
-        Contract contract = contractService.getContractById(contractId);
+    public ResponseEntity<ModelApiResponse> getContractById(@PathVariable String contractId) {
+        Contract contract = contractService.getContractById(Long.valueOf(contractId));
         return ResponseEntity.ok(ContractApiResponse.getContract(contract));
     }
 
     @Override
     @PutMapping("/{contractId}")
-    public ResponseEntity<ModelApiResponse> updateContractById(Contract body, @PathVariable Long contractId) {
-        contractService.updateContractById(body, contractId);
+    public ResponseEntity<ModelApiResponse> updateContractById(Contract body, @PathVariable String contractId) {
+        contractService.updateContractById(body, Long.valueOf(contractId));
         return ResponseEntity.ok(ContractApiResponse.updateContract(contractId));
     }
 }

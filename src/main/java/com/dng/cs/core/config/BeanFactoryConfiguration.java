@@ -15,7 +15,7 @@ public class BeanFactoryConfiguration {
     public ModelMapper clientModelMapper(){
         ModelMapper modelMapper = new ModelMapper();
         TypeMap<Client, ClientEntity> emailMapper = modelMapper.createTypeMap(Client.class, ClientEntity.class);
-        emailMapper.addMappings(mapper -> mapper.map(Client::getEmail, ClientEntity::seteMail));
+        emailMapper.addMappings(mapper -> mapper.map(Client::getEmail, ClientEntity::setEMail));
         return modelMapper;
     }
 

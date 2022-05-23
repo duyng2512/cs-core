@@ -28,8 +28,6 @@ public class ClientController implements ClientApi {
     // POST
     @Override
     @PostMapping
-    @Procedure(MediaType.APPLICATION_JSON_VALUE)
-    @Consumes(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ModelApiResponse> addClient(Client body) {
         Long newId = clientService.addClient(body);
         return ResponseEntity.ok(ClientApiResponse.createSuccessful(newId));
@@ -37,45 +35,35 @@ public class ClientController implements ClientApi {
 
     @Override
     @PostMapping("/{clientId}/uploadImage")
-    @Procedure(MediaType.APPLICATION_JSON_VALUE)
-    @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ModelApiResponse> uploadFile(@PathVariable Long clientId, String additionalMetadata, MultipartFile file) {
+    public ResponseEntity<ModelApiResponse> uploadFile(@PathVariable String clientId, String additionalMetadata, MultipartFile file) {
         return ResponseEntity.ok(ClientApiResponse.uploadImage());
     }
 
     // DELETE
     @Override
     @DeleteMapping("/{clientId}")
-    @Procedure(MediaType.APPLICATION_JSON_VALUE)
-    @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ModelApiResponse> deleteClient(@PathVariable Long clientId) {
-        clientService.deleteClient(clientId);
+    public ResponseEntity<ModelApiResponse> deleteClient(@PathVariable String clientId) {
+        clientService.deleteClient(Long.valueOf(clientId));
         return ResponseEntity.ok(ClientApiResponse.deleteClient(clientId));
     }
 
     // GET
     @Override
     @GetMapping("/{clientId}")
-    @Procedure(MediaType.APPLICATION_JSON_VALUE)
-    @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ModelApiResponse> getClientById(@PathVariable Long clientId) {
-        return ResponseEntity.ok(ClientApiResponse.getClient(clientService.getClientById(clientId)));
+    public ResponseEntity<ModelApiResponse> getClientById(@PathVariable String clientId) {
+        return ResponseEntity.ok(ClientApiResponse.getClient(clientService.getClientById(Long.valueOf(clientId))));
     }
 
     @Override
     @GetMapping("/findByCategory")
-    @Procedure(MediaType.APPLICATION_JSON_VALUE)
-    @Consumes(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ModelApiResponse> getClientsByCategory(@RequestParam("category") String category) {
         return ResponseEntity.ok(ClientApiResponse.getClientByCategory(category, clientService.getClientsByCategory(category)));
     }
 
     @Override
     @PutMapping("/{clientId}")
-    @Procedure(MediaType.APPLICATION_JSON_VALUE)
-    @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ModelApiResponse> updateClient(@PathVariable Long clientId, Client body) {
-        clientService.updateClient(clientId, body);
+    public ResponseEntity<ModelApiResponse> updateClient(@PathVariable String clientId, Client body) {
+        clientService.updateClient(Long.valueOf(clientId), body);
         return ResponseEntity.ok(ClientApiResponse.updateClient(clientId));
     }
 

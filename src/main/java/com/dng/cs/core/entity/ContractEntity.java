@@ -36,7 +36,6 @@ public class ContractEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CLIENT__ID")
     private ContractEntity clientId;
-
     @Basic
     @Column(name = "CURR")
     private String curr;

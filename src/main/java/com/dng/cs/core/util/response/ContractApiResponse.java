@@ -26,11 +26,11 @@ public class ContractApiResponse {
         return response;
     }
 
-    static public ModelApiResponse deleteContract(Long id) {
+    static public ModelApiResponse deleteContract(String id) {
         ModelApiResponse response = new ModelApiResponse();
         response.setTime(getCurrentTime());
         response.setCode(200L);
-        response.setMessage(String.format("Contract Id [%d] delete successfully", id));
+        response.setMessage(String.format("Contract Id [%s] delete successfully", id));
         return response;
     }
 
@@ -43,11 +43,11 @@ public class ContractApiResponse {
         return response;
     }
 
-    static public ModelApiResponse updateContract(Long id) {
+    static public ModelApiResponse updateContract(String id) {
         ModelApiResponse response = new ModelApiResponse();
         response.setTime(getCurrentTime());
         response.setCode(200L);
-        response.setMessage(String.format("Contract Id [%d] update successfully", id));
+        response.setMessage(String.format("Contract Id [%s] update successfully", id));
         return response;
     }
 
