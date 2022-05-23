@@ -1,0 +1,791 @@
+swagger: '2.0'
+info:
+  description: ''
+  version: 1.0.0 Snapshot
+  title: CS API
+  termsOfService: http://swagger.io/terms/
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: api.dng.cs
+basePath: /v2
+tags:
+  - name: Client
+    description: Client operation
+  - name: Contract
+    description: Contract Info
+  - name: Address
+    description: Address Info
+  - name: Auth
+    description: Authentication endpoint
+
+schemes:
+  - https
+  - http
+
+paths:
+  /client/{clientId}/uploadImage:
+    post:
+      tags:
+        - Client
+      summary: uploads an image
+      description: ''
+      operationId: uploadFile
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - name: clientId
+          in: path
+          description: ID of Client to update
+          required: true
+          type: integer
+          format: int64
+        - name: additionalMetadata
+          in: formData
+          description: Additional data to pass to server
+          required: false
+          type: string
+        - name: file
+          in: formData
+          description: file to upload
+          required: false
+          type: file
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+  /client:
+    post:
+      tags:
+        - Client
+      summary: Add a new client to the store
+      description: ''
+      operationId: addClient
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - in: body
+          name: body
+          description: Client Object to create
+          required: true
+          schema:
+            $ref: '#/definitions/Client'
+      responses:
+        '200':
+          description: Create valid client
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '405':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+  /client/findByCategory:
+    get:
+      tags:
+        - Client
+      summary: Finds Clients by status
+      description: Find client by status
+      operationId: getClientsByCategory
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: category
+          in: query
+          description: Category for filtering
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid status value
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+  /client/{clientId}:
+    get:
+      tags:
+        - Client
+      summary: Find client by ID
+      description: Returns a single client
+      operationId: getClientById
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: clientId
+          in: path
+          description: ID of client to return
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid ID supplied
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '404':
+          description: Client not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+    put:
+      tags:
+        - Client
+      summary: Update an existing client
+      description: ''
+      operationId: updateClient
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: clientId
+          in: path
+          description: ID of client to return
+          required: true
+          type: integer
+          format: int64
+        - in: body
+          name: body
+          description: Client object that needs to be added to the store
+          required: true
+          schema:
+            $ref: '#/definitions/Client'
+      responses:
+        '200':
+          description: Update valid client
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid ID supplied
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '404':
+          description: Client not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '405':
+          description: Validation exception
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+    delete:
+      tags:
+        - Client
+      summary: Deletes a client
+      description: ''
+      operationId: deleteClient
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: clientId
+          in: path
+          description: Client id to delete
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Client Delete
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid ID supplied
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '404':
+          description: Client not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+  /contract:
+    post:
+      tags:
+        - Contract
+      summary: Create new Contract
+      description: ''
+      operationId: addContract
+      consumes:
+        - application/json
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - in: body
+          name: body
+          description: contract body
+          required: true
+          schema:
+            $ref: '#/definitions/Contract'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Contract
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+  /contract/{contractId}:
+    get:
+      tags:
+        - Contract
+      summary: Find contract by ID
+      description: Find Contract
+      operationId: getContractById
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: contractId
+          in: path
+          description: ID of contract that needs to be fetched
+          required: true
+          type: integer
+          maximum: 10
+          minimum: 1
+          format: int64
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Contract
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '404':
+          description: Contract not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+    put:
+      tags:
+        - Contract
+      summary: Find contract by ID
+      description: Find Contract
+      operationId: updateContractById
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - in: body
+          name: body
+          description: contract body
+          required: true
+          schema:
+            $ref: '#/definitions/Contract'
+        - name: contractId
+          in: path
+          description: ID of contract that needs to be fetched
+          required: true
+          type: integer
+          maximum: 10
+          minimum: 1
+          format: int64
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Contract
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '404':
+          description: Contract not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+    delete:
+      tags:
+        - Contract
+      summary: Delete contract by ID
+      description: Delete contract by Id
+      operationId: deleteContractById
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: contractId
+          in: path
+          description: ID of the contract that needs to be deleted
+          required: true
+          type: integer
+          minimum: 1
+          format: int64
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Contract ID Invalid
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '404':
+          description: Contract not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+  /contracts:
+    get:
+      tags:
+        - Contract
+      summary: Returns contracts
+      description: Returns a map of status codes to quantities
+      operationId: getContracts
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+  /address/createWithArray:
+    post:
+      tags:
+        - Address
+      summary: Creates list of address for client
+      description: ''
+      operationId: createAddressWithArrayInput
+      consumes:
+        - application/json
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - in: body
+          name: body
+          description: List of address object
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Address'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Contract ID Invalid
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '404':
+          description: Contract not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+  /address:
+    post:
+      tags:
+        - Address
+      summary: Creates list of address for client
+      description: ''
+      operationId: createAddress
+      consumes:
+        - application/json
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - in: body
+          name: body
+          description: List of address object
+          required: true
+          schema:
+            $ref: '#/definitions/Address'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Contract ID Invalid
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '404':
+          description: Contract not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+  /address/{clientId}:
+    get:
+      tags:
+        - Address
+      summary: Get address by clientId
+      description: ''
+      operationId: getAddressByClientId
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: clientId
+          in: path
+          description: 'The name that needs to be fetched. Use user1 for testing'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid username supplied
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '404':
+          description: User not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+  /address/{addressId}:
+    get:
+      tags:
+        - Address
+      summary: Get address by clientId
+      description: ''
+      operationId: getAddressByAddressId
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: addressId
+          in: path
+          description: 'Address ID'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid client supplied
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '404':
+          description: User not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+    put:
+      tags:
+        - Address
+      summary: Updated user
+      description: This can only be done by the logged in user.
+      operationId: updateAddress
+      consumes:
+        - application/json
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: addressId
+          in: path
+          description: 'Address ID'
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Updated user object
+          required: true
+          schema:
+            $ref: '#/definitions/Address'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid user supplied
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '404':
+          description: User not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+    delete:
+      tags:
+        - Address
+      summary: Delete address by client id
+      description: This can only be done by the logged in user.
+      operationId: deleteAddressByClientId
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: addressId
+          in: path
+          description: 'Address ID'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid username supplied
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '404':
+          description: User not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+  /auth/login:
+    get:
+      tags:
+        - Auth
+      summary: Logs client into the system
+      description: ''
+      operationId: loginUser
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: username
+          in: query
+          description: The user name for login
+          required: true
+          type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          headers:
+            X-Expires-After:
+              type: string
+              format: date-time
+              description: date in UTC when token expires
+            X-Rate-Limit:
+              type: integer
+              format: int32
+              description: calls per hour allowed by the user
+          schema:
+            type: string
+        '400':
+          description: Invalid username/password supplied
+
+  /auth/logout:
+    get:
+      tags:
+        - Auth
+      summary: Logs out current logged in user session
+      description: ''
+      operationId: logoutUser
+      produces:
+        - application/json
+        - application/xml
+      parameters: []
+      responses:
+        default:
+          description: successful operation
+
+  /auth/signin:
+    post:
+      tags:
+        - Auth
+      summary: Create user
+      description: This can only be done by the logged in user.
+      operationId: createUser
+      consumes:
+        - application/json
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - in: body
+          name: body
+          description: Created user object
+          required: true
+          schema:
+            $ref: '#/definitions/Client'
+      responses:
+        default:
+          description: successful operation
+
+securityDefinitions:
+  api_key:
+    type: apiKey
+    name: api_key
+    in: header
+
+  client_auth:
+    type: oauth2
+    authorizationUrl: https://petstore.swagger.io/oauth/authorize
+    flow: implicit
+    scopes:
+      read:clients: read your client
+      write:clients: modify clients in your account
+
+definitions:
+  ApiResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int64
+      message:
+        type: string
+      responseData:
+        type: object
+      time:
+        type: string
+
+  Client:
+    type: object
+    properties:
+      state:
+        type: string
+      dateCreated:
+        type: string
+        format: date-time
+      id:
+        type: integer
+        format: int64
+      branch:
+        type: string
+      clientCat:
+        type: string
+      productCat:
+        type: string
+      clientName:
+        type: string
+      birthDate:
+        type: string
+        format: date-time
+      gender:
+        type: string
+      clientNumber:
+        type: string
+      regNumber:
+        type: string
+      addressLine:
+        type: string
+      phone:
+        type: string
+      fax:
+        type: string
+      email:
+        type: string
+      addInfo:
+        type: string
+      addDate:
+        type: string
+        format: date-time
+      isReady:
+        type: string
+    xml:
+      name: Client
+
+  Contract:
+    type: object
+    properties:
+      state:
+        type: string
+      id:
+        type: integer
+        format: int64
+      productCat:
+        type: string
+      contractCat:
+        type: string
+      contractNumber:
+        type: string
+      commentText:
+        type: string
+      mainProduct:
+        type: string
+      clientId:
+        type: integer
+        format: int64
+      currency:
+        type: string
+      amountAvailable:
+        type: integer
+        format: int64
+      dateOpen:
+        type: string
+        format: date-time
+      dateExpire:
+        type: string
+        format: date-time
+      cardExpire:
+        type: string
+        format: date-time
+      contractStatus:
+        type: string
+      addInfo:
+        type: string
+      isReady:
+        type: string
+    xml:
+      name: Contract
+
+  Address:
+    type: object
+    properties:
+      state:
+        type: string
+      dateCreated:
+        type: string
+        format: date-time
+      id:
+        type: integer
+        format: int64
+      clientId:
+        type: integer
+        format: int64
+      addressType:
+        type: string
+      addressLine:
+        type: string
+      zipcode:
+        type: string
+      phone:
+        type: string
+      email:
+        type: string
+      url:
+        type: string
+      deliveryType:
+        type: string
+      isReady:
+        type: string
+    xml:
+      name: Address
+
+
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
