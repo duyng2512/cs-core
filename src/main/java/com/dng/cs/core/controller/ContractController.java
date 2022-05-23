@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/contract")
 public class ContractController implements ContractApi {
-
     private final ContractService contractService;
-
     public ContractController(ContractService contractService) {
         this.contractService = contractService;
     }

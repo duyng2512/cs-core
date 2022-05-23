@@ -53,11 +53,9 @@ public class ContractService {
         contractBaseRepository.save(modelMapper.map(contractDTO, ContractEntity.class));
     }
 
-
     @Transactional(readOnly = true)
     public Contract getContractById(Long contractId) {
         return modelMapper.map(contractBaseRepository.findById(contractId), Contract.class);
     }
-
 
 }
