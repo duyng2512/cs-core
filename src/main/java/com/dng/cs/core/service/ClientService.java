@@ -91,15 +91,17 @@ public class ClientService {
     @Transactional
     public void updateClient(@PathVariable Long clientId, Client clientDTO) {
         clientValidator.validate(clientDTO);
-        String err;
-        Optional<ClientEntity> existedEntity = clientBaseRepository.findById(clientId);
 
-        if (existedEntity.isEmpty()){
+        String err;
+        Optional<ClientEntity> optEntity = clientBaseRepository.findById(clientId);
+
+        if (optEntity.isEmpty()){
             err = String.format("Client ID %d not found", clientId);
             throw new EntityNotFoundException(err);
         } else {
-            modelMapper.map(clientDTO, existedEntity);
-            clientBaseRepository.save(existedEntity.get());
+            ClientEntity entity = optEntity.get();
+            modelMapper.map(clientDTO, entity);
+            clientBaseRepository.save(entity);
         }
     }
 }

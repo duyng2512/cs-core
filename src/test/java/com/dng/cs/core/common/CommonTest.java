@@ -26,7 +26,7 @@ public class CommonTest {
         TypeMap<Client, ClientEntity> propertyMapper = modelMapper.createTypeMap(Client.class, ClientEntity.class);
 
         // add deep mapping to flatten source's Player Object into a single field in destination
-        propertyMapper.addMappings(mapper -> mapper.map(Client::getEmail, ClientEntity::seteMail));
+        propertyMapper.addMappings(mapper -> mapper.map(Client::getEmail, ClientEntity::setEMail));
 
 
         Client client = new Client();
@@ -38,7 +38,7 @@ public class CommonTest {
         client.setEmail("old email");
 
         modelMapper.map(client, clientEntity);
-        assertThat(clientEntity.geteMail())
+        assertThat(clientEntity.getEMail())
                 .isEqualTo("update email");
     }
 
@@ -49,7 +49,7 @@ public class CommonTest {
         // setup
 
         TypeMap<Client, ClientEntity> propertyMapper = modelMapper.createTypeMap(Client.class, ClientEntity.class);
-        propertyMapper.addMappings(mapper -> mapper.map(Client::getEmail, ClientEntity::seteMail));
+        propertyMapper.addMappings(mapper -> mapper.map(Client::getEmail, ClientEntity::setEMail));
 
         // when map between different hierarchies
         Client client = new Client();
@@ -58,13 +58,13 @@ public class CommonTest {
 
         ClientEntity clientEntity = new ClientEntity();
         clientEntity.setId(1000L);
-        clientEntity.seteMail("old email");
+        clientEntity.setEMail("old email");
 
         modelMapper.map(client, clientEntity);
         // then
-        assertThat(clientEntity.geteMail()).isEqualTo(client.getEmail());
+        assertThat(clientEntity.getEMail()).isEqualTo(client.getEmail());
 
-        System.out.println("clientEntity " + clientEntity.geteMail());
+        System.out.println("clientEntity " + clientEntity.getEMail());
         System.out.println("client " + client.getEmail());
     }
 

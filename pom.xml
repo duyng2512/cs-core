@@ -56,6 +56,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
+        <!--	Java 8 Date/time	-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
 
         <!-- SWAGGER -->
         <dependency>
@@ -198,7 +203,7 @@
 
                             <!-- pass any necessary config options -->
                             <configOptions>
-                                <dateLibrary>joda</dateLibrary>
+                                <dateLibrary>java8</dateLibrary>
                                 <interfaceOnly>true</interfaceOnly>
                             </configOptions>
                             <!-- override the default library to jersey2 -->

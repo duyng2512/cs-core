@@ -60,6 +60,7 @@ public class ClientController implements ClientApi {
         return ResponseEntity.ok(ClientApiResponse.getClientByCategory(category, clientService.getClientsByCategory(category)));
     }
 
+    // PUT
     @Override
     @PutMapping("/{clientId}")
     public ResponseEntity<ModelApiResponse> updateClient(@PathVariable String clientId, Client body) {

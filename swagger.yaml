@@ -450,7 +450,8 @@ paths:
           schema:
             $ref: '#/definitions/ApiResponse'
 
-  /address/{addressId}:
+  /address/client/{clientId}:
+
     get:
       tags:
         - Address
@@ -461,9 +462,9 @@ paths:
         - application/json
         - application/xml
       parameters:
-        - name: addressId
+        - name: clientId
           in: path
-          description: 'Address ID'
+          description: 'Client ID'
           required: true
           type: string
       responses:
@@ -480,6 +481,7 @@ paths:
           schema:
             $ref: '#/definitions/ApiResponse'
 
+  /address/{addressId}:
     put:
       tags:
         - Address
@@ -730,7 +732,6 @@ definitions:
         format: date-time
       cardExpire:
         type: string
-        format: date-time
       contractStatus:
         type: string
       addInfo:

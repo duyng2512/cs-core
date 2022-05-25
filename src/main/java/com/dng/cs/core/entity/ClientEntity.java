@@ -1,6 +1,5 @@
 package com.dng.cs.core.entity;
 
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,12 +8,12 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "CLIENT")
 @ToString @Getter @Setter
 public class ClientEntity {
+
     @Basic
     @Column(name = "STATE")
     private String state;
@@ -72,8 +71,10 @@ public class ClientEntity {
     private String isReady;
 
     @OneToMany(orphanRemoval = true, mappedBy = "clientId")
+    @ToString.Exclude
     private List<ContractEntity> contracts = new ArrayList<>();
 
     @OneToMany(orphanRemoval = true, mappedBy = "clientId")
+    @ToString.Exclude
     private List<AddressEntity> addresses = new ArrayList<>();
 }
