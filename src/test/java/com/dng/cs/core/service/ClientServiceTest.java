@@ -115,7 +115,6 @@ class ClientServiceTest {
 
         modelMapper.map(dto, entity);
         assertThat(entity.getClientName()).isEqualTo("New name");
-
     }
 
 }
