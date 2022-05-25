@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class BusinessAdviceControl {
+public class AdviceController {
 
     @ExceptionHandler({BusinessConstraintException.class, InvalidReqBodyException.class})
     public ResponseEntity<Object> businessConstraint(RuntimeException ex) {

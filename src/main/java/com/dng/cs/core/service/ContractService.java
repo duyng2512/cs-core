@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.Optional;
+
 @Service
 public class ContractService {
 
@@ -55,7 +57,14 @@ public class ContractService {
 
     @Transactional(readOnly = true)
     public Contract getContractById(Long contractId) {
-        return modelMapper.map(contractBaseRepository.findById(contractId), Contract.class);
+        String err;
+        Optional<ContractEntity> entity = contractBaseRepository.findById(contractId);
+        if (entity.isEmpty()) {
+            err = String.format("Contract id [%d] not found", contractId);
+            throw new EntityNotFoundException(err);
+        } else {
+            return modelMapper.map( entity.get(), Contract.class);
+        }
     }
 
 }

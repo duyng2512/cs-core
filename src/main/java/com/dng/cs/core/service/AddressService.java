@@ -2,6 +2,7 @@ package com.dng.cs.core.service;
 
 import com.dng.cs.core.entity.AddressEntity;
 import com.dng.cs.core.entity.ClientEntity;
+import com.dng.cs.core.exception.EntityNotFoundException;
 import com.dng.cs.core.exception.InvalidReqBodyException;
 import com.dng.cs.core.model.Address;
 import com.dng.cs.core.repository.base.AddressBaseRepository;
@@ -17,6 +18,8 @@ import javax.persistence.PersistenceContext;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -27,6 +30,7 @@ public class AddressService {
     private final AddressValidator addressValidator;
     private final AddressBaseRepository addressBaseRepository;
     private final ModelMapper modelMapper;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -66,8 +70,17 @@ public class AddressService {
 
     @Transactional
     public void updateAddress(String addressId, Address addressDTO) {
+        String err;
         addressValidator.validate(addressDTO);
-        addressBaseRepository.save(modelMapper.map(addressDTO, AddressEntity.class));
+        Optional<AddressEntity> optEntity = addressBaseRepository.findById(Long.valueOf(addressId));
+        if (optEntity.isEmpty()) {
+            err = String.format("Address id [%s] not found", addressId);
+            throw new EntityNotFoundException(err);
+        } else {
+            AddressEntity newEntity = optEntity.get();
+            modelMapper.map(addressDTO, newEntity);
+            addressBaseRepository.save(newEntity);
+        }
     }
 
     @Transactional
