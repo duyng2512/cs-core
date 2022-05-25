@@ -91,6 +91,7 @@ public class AddressService {
     @Transactional(readOnly = true)
     public List<Address> getAddressByClientId(String clientId){
         ClientEntity entity = entityManager.getReference(ClientEntity.class, Long.valueOf(clientId));
+        List<AddressEntity> listAddress = addressBaseRepository.findAddressEntitiesByClientId(entity);
         return addressBaseRepository.findAddressEntitiesByClientId(entity)
                                     .parallelStream()
                                     .map(m -> modelMapper.map(m, Address.class))

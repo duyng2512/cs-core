@@ -10,10 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.persistence.PersistenceException;
+
 @ControllerAdvice
 public class AdviceController {
 
-    @ExceptionHandler({BusinessConstraintException.class, InvalidReqBodyException.class})
+    @ExceptionHandler({BusinessConstraintException.class, InvalidReqBodyException.class, PersistenceException.class})
     public ResponseEntity<Object> businessConstraint(RuntimeException ex) {
         return new ResponseEntity<>(BusinessApiResponse.exception(ex.getMessage()),
                                     HttpStatus.INTERNAL_SERVER_ERROR);
