@@ -2,10 +2,17 @@ package com.dng.cs.core.common;
 
 import com.dng.cs.core.entity.ClientEntity;
 import com.dng.cs.core.model.Client;
+import com.dng.cs.core.util.TestUtil;
+import org.assertj.core.api.Assert;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
+import org.springframework.test.annotation.Repeat;
 import org.springframework.ui.ModelMap;
+
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
@@ -68,4 +75,16 @@ public class CommonTest {
         System.out.println("client " + client.getEmail());
     }
 
+    @RepeatedTest(5)
+    public void randomStringNumber_returnStringWithSpecificLen(){
+        String result = TestUtil.randomStringNumber(10);
+        System.out.println(result);
+        assertThat(result.length()).isEqualTo(10);
+    }
+
+    @Test
+    public void dateTime_java8(){
+        OffsetDateTime time = OffsetDateTime.now();
+        System.out.println(time.format(DateTimeFormatter.ISO_DATE_TIME));
+    }
 }

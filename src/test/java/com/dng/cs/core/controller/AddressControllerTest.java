@@ -28,33 +28,41 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
     @ WebMvcTest(AddressController.class): narrow down to web layers
 
-    Using this annotation will disable full auto-configuration and instead apply only configuration relevant to MVC tests (i.e. @Controller, @ControllerAdvice,
-    @ JsonComponent, Converter/GenericConverter, Filter, WebMvcConfigurer and HandlerMethodArgumentResolver beans but not @Component, @Service or @Repository beans
+    Using this annotation will disable full autoconfiguration and instead apply only configuration relevant
+    to MVC tests (i.e. @Controller, @ControllerAdvice, @JsonComponent, Converter/GenericConverter, Filter,
+    WebMvcConfigurer and HandlerMethodArgumentResolver beans but not @Component, @Service or @Repository beans
 
  */
 
-@WebMvcTest(AddressController.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
 @TestPropertySource(locations="classpath:application-test.properties")
 class AddressControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
+    @MockBean
+    private AddressService service;
 
-   @MockBean
-   private AddressService service;
-
-   @MockBean
-   private AddressBaseRepository repository;
-
+    @MockBean
+    private AddressBaseRepository repository;
 
     @Test
     void getAddressByClientId_validId_returnClientDTO() throws Exception {
         this.mockMvc.perform(get("/address/100"))
                     .andDo(print())
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.code").value("200"));
-                    //.andExpect(jsonPath("$.responseData.id").value("100"));
+                    .andExpect(jsonPath("$.code").value("200"))
+                    .andExpect(jsonPath("$.responseData.id").value("100"));
+    }
+
+    @Test
+    void getAddressByClientId_invalidId_returnException() throws Exception {
+        this.mockMvc.perform(get("/address/500"))
+                    .andDo(print())
+                    .andExpect(status().isNotFound());
+
     }
 
     @Test
