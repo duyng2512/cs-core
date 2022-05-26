@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,7 +53,7 @@ class ContractServiceTest {
 
         Contract contract = new Contract();
         contract.setCardExpire("2501");
-        contract.setDateExpire(OffsetDateTime.now().plusYears(2));
+        contract.setDateExpire(LocalDate.now());
         contract.setDateOpen(OffsetDateTime.now().minusYears(3));
 
         modelMapper.map(contract, entity);

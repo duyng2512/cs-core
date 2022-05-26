@@ -3,6 +3,11 @@ package com.dng.cs.core.controller;
 import com.dng.cs.core.model.Client;
 import com.dng.cs.core.repository.base.ClientBaseRepository;
 import com.dng.cs.core.util.TestUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
+import com.fasterxml.jackson.databind.util.StdDateFormat;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import org.json.JSONObject;
@@ -33,7 +38,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations="classpath:application-test.properties")
 class ClientControllerTest {
 
-    Gson gson = new Gson();
+    ObjectMapper mapper = JsonMapper.builder()
+                                    .addModule(new JavaTimeModule())
+                                    .build();
     @Autowired
     private MockMvc mockMvc;
 
@@ -42,6 +49,7 @@ class ClientControllerTest {
 
     @BeforeEach
     void setUp() {
+        mapper.setDateFormat(new ISO8601DateFormat());
     }
 
     @AfterEach
@@ -52,23 +60,23 @@ class ClientControllerTest {
     void addClient_validRequest_returnNewId() throws Exception {
 
         Client client = new Client();
-        client.setClientName("Duy Nguyen");
+        client.setClientName("Duy Nguyen Tr");
         client.setRegNumber(TestUtil.randomStringNumber(9));
         client.setPhone(TestUtil.randomStringNumber(10));
         client.setClientCat("PRIVATE");
-        client.setEmail("duyng@gmail.com");
+        client.setEmail("test@gmail.com");
         client.setProductCat("ISS");
         client.setIsReady("Y");
         client.setState("ACTIVE");
+        client.setBranch("HCM");
+        client.setDateCreated(OffsetDateTime.now());
+        client.setDateCreated(OffsetDateTime.now());
 
-        String bodyReq = gson.toJson(client);
-        JsonElement jsonElement = gson.toJsonTree(client);
-        jsonElement.getAsJsonObject().addProperty("dateCreated", "IT");
-        String s = gson.toJson(jsonElement);
-        System.out.println(s);
+        String bodyReq = mapper.writeValueAsString(client);
+        System.out.println(bodyReq);
 
         MockHttpServletRequestBuilder request = post("/client").content(bodyReq)
-                                                                          .contentType(MediaType.APPLICATION_JSON);
+                                                                         .contentType(MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(request)
                                   .andDo(print())

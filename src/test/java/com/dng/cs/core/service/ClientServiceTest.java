@@ -6,6 +6,15 @@ import com.dng.cs.core.exception.InvalidReqBodyException;
 import com.dng.cs.core.model.Client;
 import com.dng.cs.core.repository.base.ClientBaseRepository;
 import com.dng.cs.core.service.validate.ClientValidator;
+import com.dng.cs.core.util.TestUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.util.StdDateFormat;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.joda.time.DateTime;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -16,8 +25,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
+import org.modelmapper.spi.MappingContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -25,7 +36,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.sql.Date;
+import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.util.Locale;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -99,8 +113,14 @@ class ClientServiceTest {
     @Test
     void mapping_dto_to_entity (){
         ModelMapper modelMapper = new ModelMapper();
-        TypeMap<Client, ClientEntity> emailMapper = modelMapper.createTypeMap(Client.class, ClientEntity.class);
-        emailMapper.addMappings(mapper -> mapper.map(Client::getEmail, ClientEntity::setEMail));
+        TypeMap<Client, ClientEntity> typeMap = modelMapper.createTypeMap(Client.class, ClientEntity.class);
+
+        Converter<OffsetDateTime, Instant> dateConverter = mappingContext -> mappingContext.getSource().toInstant();
+        Converter<String, String> uppercaseConverter = mappingContext -> mappingContext.getSource().toUpperCase(Locale.ROOT);
+
+        typeMap.addMappings(map -> map.using(uppercaseConverter).map(Client::getClientName, ClientEntity::setClientName));
+        typeMap.addMappings(map -> map.using(dateConverter).map(Client::getDateCreated, ClientEntity::setDateCreated));
+        typeMap.addMappings(map -> map.using(dateConverter).map(Client::getAddDate, ClientEntity::setAddDate));
 
         Client dto = new Client();
         dto.setDateCreated(OffsetDateTime.now());
@@ -110,11 +130,32 @@ class ClientServiceTest {
 
         ClientEntity entity = new ClientEntity();
         entity.setId(100L);
-        entity.setPhone("XXXXXXXXXXX");
+        entity.setPhone("090992222222");
         entity.setClientName("Old name");
 
         modelMapper.map(dto, entity);
-        assertThat(entity.getClientName()).isEqualTo("New name");
+        assertThat(entity.getClientName()).isEqualTo("New name".toUpperCase(Locale.ROOT));
+        assertThat(entity.getDateCreated()).isNotNull();
+    }
+
+    @Test
+    void mapping_from_object_to_string() throws JsonProcessingException {
+        ObjectMapper mapper = JsonMapper.builder()
+                                        .addModule(new JavaTimeModule())
+                                        .build();
+        mapper.setDateFormat(new StdDateFormat().withColonInTimeZone(true));
+        Client client = new Client();
+        client.setClientName("Duy Nguyen");
+        client.setRegNumber(TestUtil.randomStringNumber(9));
+        client.setPhone(TestUtil.randomStringNumber(10));
+        client.setClientCat("PRIVATE");
+        client.setEmail("duyng@gmail.com");
+        client.setProductCat("ISS");
+        client.setIsReady("Y");
+        client.setState("ACTIVE");
+        client.setDateCreated(OffsetDateTime.now());
+        String bodyReq = mapper.writeValueAsString(client);
+        System.out.println(bodyReq);
     }
 
 }

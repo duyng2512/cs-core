@@ -673,7 +673,7 @@ definitions:
         type: string
       birthDate:
         type: string
-        format: date-time
+        format: date
       gender:
         type: string
       clientNumber:
@@ -692,7 +692,7 @@ definitions:
         type: string
       addDate:
         type: string
-        format: date-time
+        format: date
       isReady:
         type: string
     xml:
@@ -729,7 +729,7 @@ definitions:
         format: date-time
       dateExpire:
         type: string
-        format: date-time
+        format: date
       cardExpire:
         type: string
       contractStatus:

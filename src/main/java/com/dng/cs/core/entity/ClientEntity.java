@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +18,11 @@ public class ClientEntity {
     @Basic
     @Column(name = "STATE")
     private String state;
+
     @Basic
     @Column(name = "DATE_CREATED")
-    private Date dateCreated;
+    private Instant dateCreated;
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID")
