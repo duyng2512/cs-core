@@ -4,7 +4,7 @@ import com.dng.cs.core.api.AddressApi;
 import com.dng.cs.core.model.Address;
 import com.dng.cs.core.model.ModelApiResponse;
 import com.dng.cs.core.service.AddressService;
-import com.dng.cs.core.util.response.AddressApiResponse;
+import com.dng.cs.core.controller.response.AddressApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

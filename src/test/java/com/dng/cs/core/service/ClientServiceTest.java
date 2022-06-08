@@ -123,7 +123,6 @@ class ClientServiceTest {
         typeMap.addMappings(map -> map.using(dateConverter).map(Client::getAddDate, ClientEntity::setAddDate));
 
         Client dto = new Client();
-        dto.setDateCreated(OffsetDateTime.now());
         dto.setPhone("09099299992");
         dto.setId(100L);
         dto.setClientName("New name");
@@ -153,7 +152,6 @@ class ClientServiceTest {
         client.setProductCat("ISS");
         client.setIsReady("Y");
         client.setState("ACTIVE");
-        client.setDateCreated(OffsetDateTime.now());
         String bodyReq = mapper.writeValueAsString(client);
         System.out.println(bodyReq);
     }

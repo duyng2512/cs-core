@@ -1,10 +1,12 @@
 package com.dng.cs.core.service;
 
 
+import com.dng.cs.core.entity.AddressEntity;
 import com.dng.cs.core.entity.ClientEntity;
 import com.dng.cs.core.exception.BusinessConstraintException;
 import com.dng.cs.core.exception.EntityNotFoundException;
 import com.dng.cs.core.exception.InvalidReqBodyException;
+import com.dng.cs.core.model.Address;
 import com.dng.cs.core.model.Client;
 import com.dng.cs.core.repository.base.ClientBaseRepository;
 import com.dng.cs.core.service.validate.ClientValidator;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,7 +28,6 @@ public class ClientService {
 
     private final ClientBaseRepository clientBaseRepository;
     private final ClientValidator clientValidator;
-
     private final ModelMapper modelMapper;
 
     public ClientService(ClientBaseRepository clientBaseRepository,
@@ -44,12 +46,10 @@ public class ClientService {
             err = "Id must be null";
             throw new InvalidReqBodyException(err);
         }
-
         if (clientBaseRepository.existsClientEntityByRegNumber(clientDTO.getRegNumber())){
             err = String.format("Reg number %s already existed", clientDTO.getRegNumber());
             throw new BusinessConstraintException(err);
         }
-
         ClientEntity entity = modelMapper.map(clientDTO, ClientEntity.class);
         ClientEntity savedEntity = clientBaseRepository.save(entity);
         return savedEntity.getId();
@@ -57,22 +57,31 @@ public class ClientService {
 
     @Transactional
     public void deleteClient(Long clientId) {
-        String err;
-        if (!clientBaseRepository.existsById(clientId)){
-            err = String.format("Client ID %d not found", clientId);
-            throw new EntityNotFoundException(err);
-        }
+        checkingIfExist(clientId);
         clientBaseRepository.deleteById(clientId);
     }
 
     @Transactional(readOnly = true)
     public Client getClientById(Long clientId) {
-        String err;
-        if (!clientBaseRepository.existsById(clientId)){
-            err = String.format("Client ID %d not found", clientId);
-            throw new EntityNotFoundException(err);
+        ClientEntity entity = checkingIfExist(clientId);
+        return modelMapper.map(entity, Client.class);
+    }
+
+    @Transactional(readOnly = true)
+    public Address getNearestAddress(Long clientId) {
+        ClientEntity entity = checkingIfExist(clientId);
+
+        List<AddressEntity> listAddress = entity.getAddresses();
+        if (listAddress.isEmpty()) {
+            throw new EntityNotFoundException("There is none address for this client");
         }
-        return modelMapper.map(clientBaseRepository.findById(clientId), Client.class);
+        AddressEntity addressEntity = listAddress.get(0);
+        for (int i = 1; i < listAddress.size(); i++){
+            if (listAddress.get(i).getAddressLine().length() > addressEntity.getAddressLine().length()){
+                addressEntity = listAddress.get(i);
+            }
+        }
+        return modelMapper.map(addressEntity, Address.class);
     }
 
     @Transactional(readOnly = true)
@@ -103,5 +112,15 @@ public class ClientService {
             modelMapper.map(clientDTO, entity);
             clientBaseRepository.save(entity);
         }
+    }
+
+    private ClientEntity checkingIfExist(Long clientId) {
+        String err;
+        Optional<ClientEntity> optEntity = clientBaseRepository.findById(clientId);
+        if (optEntity.isEmpty()) {
+            err = String.format("Client ID %d not found", clientId);
+            throw new EntityNotFoundException(err);
+        }
+        return optEntity.get();
     }
 }

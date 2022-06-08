@@ -8,7 +8,9 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "CLIENT")
@@ -18,11 +20,9 @@ public class ClientEntity {
     @Basic
     @Column(name = "STATE")
     private String state;
-
     @Basic
     @Column(name = "DATE_CREATED")
-    private Instant dateCreated;
-
+    private Instant dateCreated = Instant.now();
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID")
@@ -73,11 +73,11 @@ public class ClientEntity {
     @Column(name = "IS_READY")
     private String isReady;
 
-    @OneToMany(orphanRemoval = true, mappedBy = "clientId")
+    @OneToMany(orphanRemoval = true, mappedBy = "clientId", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<ContractEntity> contracts = new ArrayList<>();
+    private Set<ContractEntity> contracts = new HashSet<>();
 
-    @OneToMany(orphanRemoval = true, mappedBy = "clientId")
+    @OneToMany(orphanRemoval = true, mappedBy = "clientId", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<AddressEntity> addresses = new ArrayList<>();
 }

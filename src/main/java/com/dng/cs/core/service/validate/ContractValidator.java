@@ -15,8 +15,8 @@ public class ContractValidator {
             throw new InvalidReqBodyException(err);
         }
 
-        if (!contractDTO.getState().equals("ACTIVE") && !contractDTO.getProductCat().equals("INACTIVE")) {
-            err = String.format("[%s] is invalid, only Product Category ACTIVE or INACTIVE is valid", contractDTO.getState());
+        if (!contractDTO.getState().equals("A") && !contractDTO.getProductCat().equals("I")) {
+            err = String.format("[%s] is invalid, only status A or I is valid", contractDTO.getState());
             throw new InvalidReqBodyException(err);
         }
 

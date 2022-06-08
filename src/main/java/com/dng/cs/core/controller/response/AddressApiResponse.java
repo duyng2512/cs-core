@@ -1,4 +1,4 @@
-package com.dng.cs.core.util.response;
+package com.dng.cs.core.controller.response;
 
 import com.dng.cs.core.model.Address;
 import com.dng.cs.core.model.ModelApiResponse;

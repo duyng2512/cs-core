@@ -20,8 +20,8 @@ public class ClientValidator {
             throw new InvalidReqBodyException(err);
         }
 
-        if (!clientDTO.getState().equals("ACTIVE") && !clientDTO.getState().equals("INACTIVE")) {
-            err = String.format("Invalid [%s], Only Product Category ISS or ACQ is valid", clientDTO.getState());
+        if (!clientDTO.getState().equals("A") && !clientDTO.getState().equals("I")) {
+            err = String.format("Invalid [%s], Only State 'A' or 'I' is valid", clientDTO.getState());
             throw new InvalidReqBodyException(err);
         }
 

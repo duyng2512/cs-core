@@ -1,10 +1,11 @@
 package com.dng.cs.core.controller;
 
 import com.dng.cs.core.api.ClientApi;
+import com.dng.cs.core.model.Address;
 import com.dng.cs.core.model.Client;
 import com.dng.cs.core.model.ModelApiResponse;
 import com.dng.cs.core.service.ClientService;
-import com.dng.cs.core.util.response.ClientApiResponse;
+import com.dng.cs.core.controller.response.ClientApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +55,13 @@ public class ClientController implements ClientApi {
     @GetMapping("/findByCategory")
     public ResponseEntity<ModelApiResponse> getClientsByCategory(@RequestParam("category") String category) {
         return ResponseEntity.ok(ClientApiResponse.getClientByCategory(category, clientService.getClientsByCategory(category)));
+    }
+
+    @Override
+    @GetMapping("/{clientId}/nearestAddress")
+    public ResponseEntity<ModelApiResponse> getNearestAddress(@PathVariable String clientId) {
+        Address address = clientService.getNearestAddress(Long.valueOf(clientId));
+        return ResponseEntity.ok(ClientApiResponse.getNearestAddress(clientId, address));
     }
 
     // PUT

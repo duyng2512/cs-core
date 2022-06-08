@@ -1,33 +1,34 @@
 package com.dng.cs.core.entity;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.Objects;
+import java.time.Instant;
 
 @Entity
 @Table(name = "ADDRESS")
 @ToString
 @Getter @Setter
-@EqualsAndHashCode
 public class AddressEntity {
     @Basic
     @Column(name = "STATE")
     private String state;
+
     @Basic
     @Column(name = "DATE_CREATED")
-    private Date dateCreated;
+    private Instant dateCreated = Instant.now();
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID")
     private long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CLIENT__ID")
+    @ToString.Exclude
     private ClientEntity clientId;
 
     @Basic

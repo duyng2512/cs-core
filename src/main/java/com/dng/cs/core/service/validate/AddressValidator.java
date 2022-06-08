@@ -24,7 +24,7 @@ public class AddressValidator {
     public void validate(Address addressDTO) {
         String err;
 
-        if (!addressDTO.getState().equals("ACTIVE") && !addressDTO.getState().equals("INACTIVE")) {
+        if (!addressDTO.getState().equals("A") && !addressDTO.getState().equals("I")) {
             err = String.format("State [%s] Only State ACTIVE or INACTIVE is valid", addressDTO.getState());
             throw new InvalidReqBodyException(err);
         }

@@ -143,6 +143,36 @@ paths:
           schema:
             $ref: '#/definitions/ApiResponse'
 
+  /client/{clientId}/nearestAddress:
+    get:
+      tags:
+        - Client
+      summary: Find address by ID
+      description: Returns a single client
+      operationId: getNearestAddress
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: clientId
+          in: path
+          description: ID of client to return
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid ID supplied
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '404':
+          description: Client not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
     put:
       tags:
         - Client
@@ -548,46 +578,57 @@ paths:
           schema:
             $ref: '#/definitions/ApiResponse'
 
+  /plastic/lock:
+    post:
+      tags:
+        - Address
+      summary: Lock plastic and card
+      description: Lock plastic and card
+      operationId: lockPlastic
+      consumes:
+        - application/json
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: ContractContext
+          in: body
+          schema:
+            $ref: '#/definitions/ContractContext'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid user supplied
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '404':
+          description: Contract not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
   /auth/login:
-    get:
+    post:
       tags:
         - Auth
-      summary: Logs client into the system
+      summary: Login User
       description: ''
       operationId: loginUser
       produces:
         - application/json
         - application/xml
-      parameters:
-        - name: username
-          in: query
-          description: The user name for login
-          required: true
-          type: string
-        - name: password
-          in: query
-          description: The password for login in clear text
-          required: true
-          type: string
       responses:
         '200':
           description: successful operation
-          headers:
-            X-Expires-After:
-              type: string
-              format: date-time
-              description: date in UTC when token expires
-            X-Rate-Limit:
-              type: integer
-              format: int32
-              description: calls per hour allowed by the user
           schema:
-            type: string
+            $ref: '#/definitions/ApiResponse'
         '400':
           description: Invalid username/password supplied
 
   /auth/logout:
-    get:
+    post:
       tags:
         - Auth
       summary: Logs out current logged in user session
@@ -600,29 +641,26 @@ paths:
       responses:
         default:
           description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
 
   /auth/signin:
     post:
       tags:
         - Auth
-      summary: Create user
+      summary: signInUser
       description: This can only be done by the logged in user.
-      operationId: createUser
+      operationId: signInUser
       consumes:
         - application/json
       produces:
         - application/json
         - application/xml
-      parameters:
-        - in: body
-          name: body
-          description: Created user object
-          required: true
-          schema:
-            $ref: '#/definitions/Client'
       responses:
         default:
           description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
 
 securityDefinitions:
   api_key:
@@ -659,7 +697,6 @@ definitions:
         type: string
       dateCreated:
         type: string
-        format: date-time
       id:
         type: integer
         format: int64
@@ -673,7 +710,6 @@ definitions:
         type: string
       birthDate:
         type: string
-        format: date
       gender:
         type: string
       clientNumber:
@@ -692,7 +728,6 @@ definitions:
         type: string
       addDate:
         type: string
-        format: date
       isReady:
         type: string
     xml:
@@ -726,17 +761,25 @@ definitions:
         format: int64
       dateOpen:
         type: string
-        format: date-time
       dateExpire:
         type: string
-        format: date
       cardExpire:
         type: string
-      contractStatus:
+      status:
         type: string
       addInfo:
         type: string
       isReady:
+        type: string
+    xml:
+      name: Contract
+
+  ContractContext:
+    type: object
+    properties:
+      method:
+        type: string
+      identification:
         type: string
     xml:
       name: Contract

@@ -3,6 +3,11 @@ package com.dng.cs.core.common;
 import com.dng.cs.core.entity.ClientEntity;
 import com.dng.cs.core.model.Client;
 import com.dng.cs.core.util.TestUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.util.StdDateFormat;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -11,8 +16,10 @@ import org.modelmapper.TypeMap;
 import org.springframework.test.annotation.Repeat;
 import org.springframework.ui.ModelMap;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
@@ -20,10 +27,17 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
 public class CommonTest {
 
     @Test
-    public void givenEntity_returnDTO() {
-        ModelMapper modelMapper = new ModelMapper();
-        Client client = modelMapper.map(new ClientEntity(), Client.class);
-        assertThat(client).isNotNull();
+    public void givenEntity_returnDTO() throws JsonProcessingException {
+        Client client = new Client();
+        client.setEmail("duyng@gmail.com");
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.setDateFormat(new StdDateFormat());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        String result = mapper.writeValueAsString(client);
+        System.out.println(result);
     }
 
     @Test
@@ -54,7 +68,6 @@ public class CommonTest {
         ModelMapper modelMapper = new ModelMapper();
 
         // setup
-
         TypeMap<Client, ClientEntity> propertyMapper = modelMapper.createTypeMap(Client.class, ClientEntity.class);
         propertyMapper.addMappings(mapper -> mapper.map(Client::getEmail, ClientEntity::setEMail));
 
@@ -66,11 +79,10 @@ public class CommonTest {
         ClientEntity clientEntity = new ClientEntity();
         clientEntity.setId(1000L);
         clientEntity.setEMail("old email");
-
         modelMapper.map(client, clientEntity);
+
         // then
         assertThat(clientEntity.getEMail()).isEqualTo(client.getEmail());
-
         System.out.println("clientEntity " + clientEntity.getEMail());
         System.out.println("client " + client.getEmail());
     }
@@ -86,5 +98,11 @@ public class CommonTest {
     public void dateTime_java8(){
         OffsetDateTime time = OffsetDateTime.now();
         System.out.println(time.format(DateTimeFormatter.ISO_DATE_TIME));
+    }
+
+    @Test
+    public void test_map_not_found(){
+        HashMap<String, String> map = new HashMap<>();
+        assertThat(map.get("a")).isNull();
     }
 }

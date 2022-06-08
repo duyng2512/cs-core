@@ -1,4 +1,4 @@
-package com.dng.cs.core.util.response;
+package com.dng.cs.core.controller.response;
 
 import com.dng.cs.core.model.Client;
 import com.dng.cs.core.model.ModelApiResponse;
@@ -63,6 +63,15 @@ public class ClientApiResponse {
         response.setCode(200L);
         response.setMessage(String.format("Clients with category [%s] load successfully", category));
         response.setResponseData(clients);
+        return response;
+    }
+
+    static public ModelApiResponse getNearestAddress(String clientId, Object address) {
+        ModelApiResponse response = new ModelApiResponse();
+        response.setTime(getCurrentTime());
+        response.setCode(200L);
+        response.setMessage(String.format("Client [%s] nearest address", clientId));
+        response.setResponseData(address);
         return response;
     }
 }

@@ -48,13 +48,9 @@ class ContractServiceTest {
         ContractEntity entity = new ContractEntity();
         entity.setClientId(new ClientEntity());
         entity.setCardExpire("2309");
-        entity.setDateExpire(OffsetDateTime.now().plusYears(3));
-        entity.setDateOpen(OffsetDateTime.now().minusYears(3));
 
         Contract contract = new Contract();
         contract.setCardExpire("2501");
-        contract.setDateExpire(LocalDate.now());
-        contract.setDateOpen(OffsetDateTime.now().minusYears(3));
 
         modelMapper.map(contract, entity);
         assertEquals(entity.getCardExpire(), "2501");

@@ -49,7 +49,6 @@ class ClientControllerTest {
 
     @BeforeEach
     void setUp() {
-        mapper.setDateFormat(new ISO8601DateFormat());
     }
 
     @AfterEach
@@ -69,8 +68,6 @@ class ClientControllerTest {
         client.setIsReady("Y");
         client.setState("ACTIVE");
         client.setBranch("HCM");
-        client.setDateCreated(OffsetDateTime.now());
-        client.setDateCreated(OffsetDateTime.now());
 
         String bodyReq = mapper.writeValueAsString(client);
         System.out.println(bodyReq);

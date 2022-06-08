@@ -4,7 +4,7 @@ import com.dng.cs.core.api.ContractApi;
 import com.dng.cs.core.model.Contract;
 import com.dng.cs.core.model.ModelApiResponse;
 import com.dng.cs.core.service.ContractService;
-import com.dng.cs.core.util.response.ContractApiResponse;
+import com.dng.cs.core.controller.response.ContractApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

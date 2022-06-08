@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface AddressBaseRepository extends PagingAndSortingRepository<AddressEntity, Long> {
     List<AddressEntity> findAddressEntitiesByClientId(ClientEntity clientId);
+    List<AddressEntity> findAddressEntitiesByAddressLineIsNotNull();
 }
