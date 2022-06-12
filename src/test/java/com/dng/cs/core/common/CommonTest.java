@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.assertj.core.api.Assert;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -41,6 +42,7 @@ public class CommonTest {
     }
 
     @Test
+    @Disabled
     public void givenDTO_returnUpdateEntity() {
         ModelMapper modelMapper = new ModelMapper();
         // setup

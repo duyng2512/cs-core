@@ -22,7 +22,7 @@ class AddressValidatorTest {
         address.setUrl("www.google.com");
         address.setPhone("0903818828");
         address.setZipcode("700000");
-        address.setState("ACTIVE");
+        address.setState("A");
     }
 
     @Test

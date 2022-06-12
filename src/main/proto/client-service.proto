@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option java_multiple_files=true;
+option java_package= "com.dng.cs.core.rpc";
+
+
+
+
+// Unary
+message Balance {
+  int32 amount = 1;
+}
+
+message BalanceReq {
+  int32 accountNumber = 1;
+}
+
+service BankService {
+  rpc getBalance(BalanceReq) returns (Balance);
+}

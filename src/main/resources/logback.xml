@@ -1,0 +1,64 @@
+<configuration scan="true" scanPeriod="3 seconds">
+
+    <property name="LOG_LEVEL" value="DEBUG" />
+
+    <!-- Default appender -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%cyan(%d{HH:mm:ss.SSS}) %red([%thread]) %highlight(%-5level) %magenta(%logger{36}) - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- System log -->
+    <appender name="System" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${user.dir}/logs/system-%d{yyyyMMdd}-%i.log</fileNamePattern>
+            <maxHistory>3</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+            <maxFileSize>10MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Error log -->
+    <appender name="Error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${user.dir}/logs/error-%d{yyyyMMdd}-%i.log</fileNamePattern>
+            <maxHistory>3</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+            <maxFileSize>10MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Info log -->
+    <appender name="Info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${user.dir}/logs/info-%d{yyyyMMdd}-%i.log</fileNamePattern>
+            <maxHistory>3</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+            <maxFileSize>10MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="System" level="${LOG_LEVEL}" additivity="false">
+        <appender-ref ref="System" />
+    </logger>
+    <logger name="Error" level="${LOG_LEVEL}" additivity="false">
+        <appender-ref ref="Error" />
+    </logger>
+    <logger name="Info" level="${LOG_LEVEL}" additivity="false">
+        <appender-ref ref="Info" />
+    </logger>
+
+    <root level="debug">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

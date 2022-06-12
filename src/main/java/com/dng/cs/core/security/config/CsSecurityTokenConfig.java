@@ -1,6 +1,5 @@
 package com.dng.cs.core.security.config;
 
-import com.dng.cs.core.security.filter.ApiKeyFilter;
 import com.dng.cs.core.security.filter.JwtTokenFilter;
 import com.dng.cs.core.security.provider.CsBasicAuthProvider;
 import com.dng.cs.core.security.util.EndpointConstants;
@@ -14,9 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity

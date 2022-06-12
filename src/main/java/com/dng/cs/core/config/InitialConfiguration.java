@@ -1,8 +1,8 @@
 package com.dng.cs.core.config;
 
+import com.dng.cs.core.log.LogFactory;
 import com.dng.cs.core.repository.base.StatusBaseRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,6 +20,7 @@ public class InitialConfiguration {
         for (StatusBaseRepository.codeAndName c : listStatus){
             map.put(c.getCode(), c.getName());
             log.info(String.format("Caching status [%s] code [%s]", c.getName(), c.getCode()));
+            LogFactory.infoLog().info(String.format("Caching status [%s] code [%s]", c.getName(), c.getCode()));
         }
         return map;
     }

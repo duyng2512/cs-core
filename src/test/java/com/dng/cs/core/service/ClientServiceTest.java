@@ -16,10 +16,7 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.joda.time.DateTime;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -46,6 +43,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
+@Disabled
 class ClientServiceTest {
 
     @Mock
@@ -111,6 +109,7 @@ class ClientServiceTest {
 
 
     @Test
+    @Disabled
     void mapping_dto_to_entity (){
         ModelMapper modelMapper = new ModelMapper();
         TypeMap<Client, ClientEntity> typeMap = modelMapper.createTypeMap(Client.class, ClientEntity.class);

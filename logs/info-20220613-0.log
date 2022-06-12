@@ -1,0 +1,57 @@
+00:01:47.951 Caching status [CARD OK] code [00]
+00:01:47.952 Caching status [CARD CLOSED] code [01]
+00:01:47.952 Caching status [CARD EXPIRED] code [02]
+00:18:07.621 Caching status [CARD OK] code [00]
+00:18:07.621 Caching status [CARD CLOSED] code [01]
+00:18:07.622 Caching status [CARD EXPIRED] code [02]
+00:18:57.525 Caching status [CARD OK] code [00]
+00:18:57.526 Caching status [CARD CLOSED] code [01]
+00:18:57.526 Caching status [CARD EXPIRED] code [02]
+00:20:12.409 [findAllBy] execute took [-177] ms 
+00:20:12.410 Caching status [CARD OK] code [00]
+00:20:12.410 Caching status [CARD CLOSED] code [01]
+00:20:12.410 Caching status [CARD EXPIRED] code [02]
+00:20:18.700 [findClientEntitiesByClientCat] execute took [-99] ms 
+00:20:54.858 [findAllBy] execute took [179] ms 
+00:20:54.859 Caching status [CARD OK] code [00]
+00:20:54.860 Caching status [CARD CLOSED] code [01]
+00:20:54.860 Caching status [CARD EXPIRED] code [02]
+00:20:59.364 [findClientEntitiesByClientCat] execute took [85] ms 
+00:22:36.377 [findAllBy] execute took [117] ms 
+00:27:36.378 [findAllBy] execute took [116] ms 
+00:32:36.394 [findAllBy] execute took [128] ms 
+00:37:36.366 [findAllBy] execute took [112] ms 
+00:42:36.384 [findAllBy] execute took [132] ms 
+00:44:30.160 Caching status [CARD OK] code [00]
+00:44:30.160 Caching status [CARD CLOSED] code [01]
+00:44:30.160 Caching status [CARD EXPIRED] code [02]
+00:45:14.204 [findAllBy] execute took [190] ms 
+00:45:14.205 Caching status [CARD OK] code [00]
+00:45:14.205 Caching status [CARD CLOSED] code [01]
+00:45:14.206 Caching status [CARD EXPIRED] code [02]
+00:45:22.501 [findClientEntitiesByClientCat] execute took [88] ms 
+00:45:22.778 [getClientsByCategory] execute took [555] ms 
+00:46:55.706 [findAllBy] execute took [128] ms 
+00:51:55.723 [findAllBy] execute took [95] ms 
+00:56:55.733 [findAllBy] execute took [105] ms 
+01:01:55.723 [findAllBy] execute took [100] ms 
+01:06:55.737 [findAllBy] execute took [112] ms 
+01:11:55.727 [findAllBy] execute took [93] ms 
+01:16:55.734 [findAllBy] execute took [95] ms 
+01:21:55.744 [findAllBy] execute took [110] ms 
+01:26:55.743 [findAllBy] execute took [110] ms 
+01:31:55.750 [findAllBy] execute took [116] ms 
+01:36:55.775 [findAllBy] execute took [140] ms 
+01:41:55.730 [findAllBy] execute took [100] ms 
+01:46:55.768 [findAllBy] execute took [115] ms 
+01:51:56.008 [findAllBy] execute took [342] ms 
+01:56:57.771 [findAllBy] execute took [2148] ms 
+02:01:55.777 [findAllBy] execute took [158] ms 
+02:06:55.746 [findAllBy] execute took [136] ms 
+02:11:55.742 [findAllBy] execute took [129] ms 
+02:16:55.725 [findAllBy] execute took [116] ms 
+02:21:55.739 [findAllBy] execute took [122] ms 
+02:26:55.742 [findAllBy] execute took [120] ms 
+02:31:55.733 [findAllBy] execute took [121] ms 
+02:36:55.773 [findAllBy] execute took [161] ms 
+02:41:55.695 [findAllBy] execute took [108] ms 

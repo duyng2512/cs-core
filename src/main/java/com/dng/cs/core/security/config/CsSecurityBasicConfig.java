@@ -5,6 +5,7 @@ import com.dng.cs.core.security.provider.CsBasicAuthProvider;
 import com.dng.cs.core.security.util.EndpointConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,6 +23,9 @@ import java.util.Arrays;
 @Profile("basic")
 public class CsSecurityBasicConfig extends WebSecurityConfigurerAdapter {
 
+    @Value("${application.security.disabled:false}")
+    private boolean securityDisabled;
+
     private CsBasicAuthProvider authenticationProvider;
 
     @Autowired
@@ -37,38 +41,44 @@ public class CsSecurityBasicConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.addFilterBefore(new ApiKeyFilter(), UsernamePasswordAuthenticationFilter.class);
+        if (!securityDisabled) {
+            http.addFilterBefore(new ApiKeyFilter(), UsernamePasswordAuthenticationFilter.class);
+            http.sessionManagement()
+                    .sessionFixation()
+                    .migrateSession()
+                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                    .maximumSessions(1)
+                    .maxSessionsPreventsLogin(true);
+            http.authorizeRequests()
+                    .antMatchers("/auth/**")
+                    .authenticated()
+                    .and()
+                    .httpBasic()
+                    .and()
+                    .rememberMe()
+                    .key("REMEMBER_ME")
+                    .tokenValiditySeconds(3600);
 
-        http.sessionManagement()
-                .sessionFixation()
-                .migrateSession()
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                .maximumSessions(1)
-                .maxSessionsPreventsLogin(true);
+            http.authorizeRequests()
+                    .antMatchers(EndpointConstants.secureEndpoint)
+                    .authenticated();
 
-        http.authorizeRequests()
-                .antMatchers("/auth/**")
-                .authenticated()
-                .and()
-                .httpBasic()
-                .and()
-                .rememberMe()
-                .key("REMEMBER_ME")
-                .tokenValiditySeconds(3600);
-
-        http.authorizeRequests()
-                .antMatchers(EndpointConstants.secureEndpoint)
-                .authenticated();
-
-        http.csrf()
-                .disable()
-                .logout(logout -> logout
-                        .logoutUrl("/auth/logout")
-                        .logoutSuccessHandler((request, response, authentication) -> {
-                            log.info("Invalidate " + Arrays.toString(request.getCookies()));
-                        })
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
-                );
+            http.csrf()
+                    .disable()
+                    .logout(logout -> logout
+                            .logoutUrl("/auth/logout")
+                            .logoutSuccessHandler((request, response, authentication) -> {
+                                log.info("Invalidate " + Arrays.toString(request.getCookies()));
+                            })
+                            .invalidateHttpSession(true)
+                            .deleteCookies("JSESSIONID")
+                    );
+        } else {
+            http.csrf().disable()
+                    .cors().disable()
+                    .authorizeRequests()
+                    .antMatchers("/**")
+                    .permitAll();
+        }
     }
 }
