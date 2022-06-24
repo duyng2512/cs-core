@@ -2,19 +2,43 @@ syntax = "proto3";
 
 option java_multiple_files=true;
 option java_package= "com.dng.cs.core.rpc";
+import "google/protobuf/any.proto";
 
 
-
+message ApiResponse {
+  int32 code = 1;
+  string message = 2;
+  repeated google.protobuf.Any responseData = 3;
+  string time = 4;
+};
 
 // Unary
-message Balance {
-  int32 amount = 1;
-}
+message ClientGetReq {
+  int32 clientId = 1;
+};
 
-message BalanceReq {
-  int32 accountNumber = 1;
-}
+message ClientPostReq {
+  string state = 1;
+  string dateCreated = 2;
+  int64 id = 3;
+  string branch = 4;
+  string clientCat = 5;
+  string productCat = 6;
+  string clientName = 7;
+  string birthDate = 8;
+  string gender = 9;
+  string clientNumber = 10;
+  string regNumber = 11;
+  string addressLine = 12;
+  string phone = 13;
+  string fax = 14;
+  string email = 15;
+  string addInfo = 16;
+  string addDate = 17;
+  bool isReady = 18;
+};
 
-service BankService {
-  rpc getBalance(BalanceReq) returns (Balance);
+service ClientService {
+  rpc getClient(ClientGetReq) returns (ApiResponse);
+  rpc postClient(ClientPostReq) returns (ApiResponse);
 }
